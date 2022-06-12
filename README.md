@@ -1,6 +1,17 @@
 # laravel-bootstrap-ui
 How to apply bootstrap template to Laravel project
 
+![Alt text](documentation/images/template-website.png?raw=true "Title")
+
+
+We will take this in Laravel (default dashboard):
+
+![Alt text](documentation/images/laravel-dashboard-with-loginregister.png?raw=true "Title")
+
+to this (in laravel):
+
+![Alt text](documentation/images/dashboard-of-theme.png?raw=true "Title")
+
 
 
 First we install laravel with composer:
@@ -184,6 +195,8 @@ drwxrwxr-x@ 10 andrewchukwu  staff   320  3 Jun 09:45 pages
 then visit the the site on: http://localhost:8000/theme/pages/dashboard.html
 
 We can use this as a referneces as we make changes to the actual laravel application templates.
+
+The approach
 
 Lets first work on the sign in/register pages:
 
