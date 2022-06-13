@@ -348,8 +348,9 @@ Now, let add the asset() function wrapper around image,css etc assets
 
 
 
+![Alt text](documentation/images/signup-page-converted-in-laravel.png?raw=true "Title")
 
-
+And compare to: **http://localhost:8000/theme/pages/sign-up.html**
 
 
 The routes for URLs are in routes/web.php which references a controller
