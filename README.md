@@ -200,7 +200,7 @@ The approach to take is to find pages with common layouts and build these layout
 
 Lets first work on the sign in/register pages:
 
-## Sign in/up pages
+## Sign in page
 
 in this theme, the layouts are quite different for these two pages, so we will create two layouts:
 
@@ -284,7 +284,7 @@ If you view the source, you can see that the asset() function has replaced the p
 
 To add the login form, we populate the content section.
 
-Rename the current in resources/views/auth/login.blade.php to "content_old", and add the code from the themes content sections:
+Rename the current in resources/views/auth/login.blade.php to "content_old", and add the code from the themes content sections. We will use the code in "content_old" so we can tie the input elements to the livewire variables.
 
 
 ![Alt text](documentation/images/rename-content-section-to-add-new-form.png?raw=true "Title")
@@ -292,6 +292,59 @@ Rename the current in resources/views/auth/login.blade.php to "content_old", and
 
 
 ![Alt text](documentation/images/login-page-with-theme-form-2.png?raw=true "Title")
+
+
+There is the background asset to encodes in the {{asset('') }} function.
+
+```
+<div class="col-md-6">
+    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+    <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url( {{asset('theme/assets/img/curved-images/curved6.jpg')}} )"></div>
+    </div>
+</div>
+```
+
+![Alt text](documentation/images/signin-page-looking-good-like-main-theme.png?raw=true "Title")
+
+
+Now you can compare with the main theme at: **http://localhost:8000/theme/pages/sign-in.html**
+
+
+
+
+
+# Sign up page
+
+We will work to change the register.blade.php page - resources/views/auth/register.blade.php
+
+Open the file - resources/views/auth/register.blade.php
+
+Change the @extends('layout.app') reference to "@extends('layouts.bootstrap.softui.signup.signup')" and change @section('content') to @section('content-old') and add the new content section:
+
+```
+@section('content')
+@endsection 
+```
+
+Copy content from "public/theme/pages/sign-up.html" into the layout file "resources/views/layouts/bootstrap/softui/signup/signup.blade.php
+
+Then take the content as highlighted and place in the @section('content') of the file: resources/views/auth/register.blade.php (You should have already added the @section('content') section). Also add the @yield('content') to pick up the content (If the signup form doesnt show this may be why).
+
+![Alt text](documentation/images/signup-page-content-register-blade.png?raw=true "Title")
+
+
+![Alt text](documentation/images/add-yield-to-signup-layout-template.png?raw=true "Title")
+
+
+
+Now check the register page (we have not added the asset() function yet, but we can check that is show un-styled HTML)
+
+![Alt text](documentation/images/signup-page-unstyled-blade.png?raw=true "Title")
+
+
+Now, let add the asset() function wrapper around image,css etc assets
+
+
 
 
 
@@ -322,3 +375,5 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 ```
+
+
