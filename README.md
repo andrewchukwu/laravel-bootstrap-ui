@@ -353,28 +353,63 @@ Now, let add the asset() function wrapper around image,css etc assets
 And compare to: **http://localhost:8000/theme/pages/sign-up.html**
 
 
-The routes for URLs are in routes/web.php which references a controller
+## The Dashboard
+
+We will now work on the main dashboard: **http://localhost:8000/theme/pages/dashboard.html**. the dashboard layout is used for some of the same pages.
+
+
+Copy the contents of **public/theme/pages/billing.html** into **resources/views/layouts/bootstrap/softui/default.blade.php**
+
+The dashboard is behind an auth guard i.e you need to be logged in to access it. We will create test route without admin to get it working quickly.
+
 
 ```
-namespace App\Http\Controllers\Auth;
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+```
+We add:
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-class AuthenticatedSessionController extends Controller
-{
-    /**
-     * Display the login view.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('auth.login');
-    }
+```
+Route::get('/test-dashboard', function () {
+    return view('test-dashboard');
+})->name('test-dashboard');
 ```
 
+- Create file resources/views/layouts/bootstreap.softui/dashboard/dashboard.blade.php
+- Copy the content of theme/pages.dashbord into the above
+- Add the assets wrappers to url references as done with the login and signin pages (there are around 40 references). Also do not forget javascript links/refereces (this will get the chart elements to appear)
+
+```
+<!--   Core JS Files   -->
+  <script src="{{ asset('theme//assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ asset('theme//assets/js/core/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('theme//assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('theme//assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('theme//assets/js/plugins/chartjs.min.js') }}"></script>
+```
+
+**Dashboard coming together**
+![Alt text](documentation/images/dashboard-coming-together.png?raw=true "Title")
+
+
+![Alt text](documentation/images/dashboard-assets-url-fixed.png?raw=true "Title")
+
+
+
+To form the template correctly, take the main content area of the dashboard and place in the file:
+```
+<div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+```
+
+Add the **yield('content')**
+ 
+![Alt text](documentation/images/dashboard-template-file-yield-content.png?raw=true "Title")
+
+
+
+Copy the file : **resources/views/dashboard.html** to **resources/views/test-dashboard.html**. And then change the layout reference:
 
