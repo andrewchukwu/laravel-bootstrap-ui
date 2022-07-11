@@ -22,8 +22,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/test-dashboard', function () {
-    return view('test-dashboard');
+    return view('softui.dashboard');
 })->name('test-dashboard');
+
+
+Route::get('/tables', function () {return view('softui.tables'); })->name('tables');
+Route::get('/billing', function () {return view('softui.billing'); })->name('billing');
+Route::get('/virtualreality', function () {return view('softui.virtualreality'); })->name('virtualreality');
+Route::get('/rtl', function () {return view('softui.rtl'); })->name('rtl');
+Route::get('/profile', function () {return view('softui.profile'); })->name('profile');
+
+
 
 require __DIR__.'/auth.php';
 

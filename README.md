@@ -358,7 +358,7 @@ And compare to: **http://localhost:8000/theme/pages/sign-up.html**
 We will now work on the main dashboard: **http://localhost:8000/theme/pages/dashboard.html**. the dashboard layout is used for some of the same pages.
 
 
-Copy the contents of **public/theme/pages/billing.html** into **resources/views/layouts/bootstrap/softui/default.blade.php**
+Copy the contents of **public/theme/pages/dashboard.html** into **resources/views/layouts/bootstrap/softui/dashboard/dashboard.blade.php**
 
 The dashboard is behind an auth guard i.e you need to be logged in to access it. We will create test route without admin to get it working quickly.
 
@@ -372,13 +372,14 @@ We add:
 
 ```
 Route::get('/test-dashboard', function () {
-    return view('test-dashboard');
+    return view('softui.test-dashboard');
 })->name('test-dashboard');
 ```
 
 - Create file resources/views/layouts/bootstreap.softui/dashboard/dashboard.blade.php
 - Copy the content of theme/pages.dashbord into the above
 - Add the assets wrappers to url references as done with the login and signin pages (there are around 40 references). Also do not forget javascript links/refereces (this will get the chart elements to appear)
+- make a file resources/views/softui/dashboard.blade.php
 
 ```
 <!--   Core JS Files   -->
@@ -409,7 +410,35 @@ Add the **yield('content')**
  
 ![Alt text](documentation/images/dashboard-template-file-yield-content.png?raw=true "Title")
 
+- To add the other menu items on the right (Tables, billing, virtual reality, RTL, profile). As these have varying layouts, we will keep things consistent and add each as a layout then take the content into a file for its own view.
 
+- Add the following (empty) layout files in **views/layouts/bootstrap/softui/
+- tables/tables.blade.php
+- billing/billing.blade.php
+- virtual_reality/virtual_reality.blade.php
+- rtl/rtl.blade.php
+- profile/profile.blade.php
+- /.blade.php
+
+- Add the additional routes
+
+```
+Route::get('/tables', function () {return view('softui.tables'); })->name('tables');
+Route::get('/billing', function () {return view('softui.billing'); })->name('billing');
+Route::get('/virtual_reality', function () {return view('softui.virtualreality'); })->name('virtualreality');
+Route::get('/rtl', function () {return view('softui.rtl'); })->name('rtl');
+Route::get('/profile', function () {return view('softui.profile'); })->name('profile');
+```
+
+- Add the view pages with the reference to the template and the content. Replace **A** and **B** with the path to the layout file
+```
+@extends('layouts.bootstrap.softui.A.B)
+
+@section('content')
+@endsection
+```
+
+*** There are repeated sections in these headers, so it would be beneifical to normalize the files (ensure that we do not have repeated copy/paste code on the UI) especially for the layouts.
 
 Copy the file : **resources/views/dashboard.html** to **resources/views/test-dashboard.html**. And then change the layout reference:
 
