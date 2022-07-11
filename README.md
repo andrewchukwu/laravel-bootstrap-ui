@@ -440,5 +440,86 @@ Route::get('/profile', function () {return view('softui.profile'); })->name('pro
 
 *** There are repeated sections in these headers, so it would be beneifical to normalize the files (ensure that we do not have repeated copy/paste code on the UI) especially for the layouts.
 
-Copy the file : **resources/views/dashboard.html** to **resources/views/test-dashboard.html**. And then change the layout reference:
+At this point we have all the main pages/layouts defined. 
+
+
+# Adding code to make UI functional
+
+Now we have the main UI created, we will now get some functionality working
+- Fix side menu link to link to our routes and create footer blade file
+- Extract and repeats code blocks (footer, header, settings pull out etc.)
+- Setup registration and login
+- Connect dashboard to backend components (restore admin auth guard to dashboard)
+
+
+## Place the navigation menu in its own blade file
+
+- Create a file **views/layout/bootstreap/softui/navbar.blade.php**
+- Take the section of the navbar from dashboard.blade.php and place in the created file.
+
+
+![Alt text](documentation/images/navbar-section-dashboard-file.png?raw=true "Title")
+
+- Add the line in its place 
+>> @include(layouts.bootstrap.softui.navbar)
+
+This will inject the code from the navbar file. Now replace the navbar code in the layout files with this line. Bear in mind, not all the template pages have the side navbar e.g. RTL, Virtual Reality
+
+We declared our route in **routes/web.php**. Lets now adjust the URL links in navbar.blade.php to route correctly to the defined laravel routes.
+We replace the href links with .html with laravel route('') functions such as :
+
+```
+<a class="nav-link  active" href="{{route('test-dashboard')}}">
+<a class="nav-link  " href="{{route('tables')}}">
+<a class="nav-link  " href="{{route('billing')}}">
+<a class="nav-link  " href="{{route('virtualreality')}}">
+<a class="nav-link  " href="{{route('rtl')}}">
+<a class="nav-link  " href="{{route('profile')}}">
+...
+<a class="nav-link  " href="{{route('login')}}">
+<a class="nav-link  " href="{{route('register')}}">
+```
+Also replace the signin and signup.
+
+Notice that the selected items has rounded rectangle around it. Since the navbar code is declared in a single place, we need to add logic to check the current route and apply this styling where the route logic is true. there is a subtle difference between the selected and unselected item. Lets take a look at the theme files to work this out.
+
+We by defulat have the dashboard selected (because we took navbar code from the dashboard). We have the original template files, so we can see aboe that there is an **active** style in the selected menu item. to make dynamic, we can perform an inline check of the Request URL route and set active where it matched.
+
+>> &lt;a class="nav-link  {{ Request::is('test-dashboard')?'active':''}}" href="{{route('test-dashboard')}}">
+
+Not all pages have the menu bar, but we can set active style incase the menu will be included at some point.
+
+
+## Footer blade file
+At the bottom of the page is a footer that we should put into its own file as it is repeated and also has links. So far we have only split the dashboard page using **@include** to includes the navbar. We do similar here for the footer. I like to keep open and close tags in the same file so we will include the footer, which is followed by the closing &lt;div&gt; tag in the file.
+
+```
+<!-- footer -->
+@include('layouts.bootstrap.softui.footer')
+
+```
+![Alt text](documentation/images/footer-section-in-file.png?raw=true "Title")
+
+
+## The popout configurator
+The popout configurator is another item (html is after teh closing main element) repeated on a few pages. We do the same, by putting it in its own file and including it where necessary. Create the file alongside the navbar.blade.php as **configurator.blade.php**.
+
+
+![Alt text](documentation/images/configurator-section-in-dashboard-file.png?raw=true "Title")
+
+
+![Alt text](documentation/images/configurator-section-in-file.png?raw=true "Title")
+
+
+Now you get the idea. We can continue to split these pages into smaller and smaller files until we have individual components and have eliminated repeated code across pages. For example, all cards on the page can be treated as separate components with dynamic titles, data, content etc.
+
+Now lets take a leap into getting the login and sign up working.
+
+
+# Setup login and signup.
+
+At the beginning of this project, we setup a database for the application to use. What we will do first is to use an in-memory database, so you will not need an external database. This will also facilitate testing (which I may demonstrate later)
+
+### Change to a in-memory database
+
 
